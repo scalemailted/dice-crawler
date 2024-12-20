@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice Grid Mock</title>
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      grid-gap: 5px;
+      margin: 20px auto;
+      width: fit-content;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      position: relative;
+    }
+    .cell img {
+      width: 100%;
+      height: 100%;
+      transform-origin: center;
+      transition: transform 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" id="dice-grid"></div>
+
+  <script>
+    // Array of source image URLs
+    const diceFaces = [
+      './images/dice-faces-1.png',
+      './images/dice-faces-2.png',
+      './images/dice-faces-2.png',
+      './images/dice-faces-3.png',
+      './images/dice-faces-4.png',
+      './images/dice-faces-5.png'
+    ];
+
+    // Function to generate a random dice face with rotation
+    function getRandomDiceFace() {
+      const randomFace = diceFaces[Math.floor(Math.random() * diceFaces.length)];
+      const randomRotation = Math.floor(Math.random() * 4) * 90; // 0, 90, 180, 270 degrees
+      return { face: randomFace, rotation: randomRotation };
+    }
+
+    // Function to create the 6x6 grid
+    function createDiceGrid(rows, cols) {
+      const gridElement = document.getElementById('dice-grid');
+      gridElement.innerHTML = ''; // Clear any previous grid
+
+      const grid = [];
+      for (let row = 0; row < rows; row++) {
+        const gridRow = [];
+        for (let col = 0; col < cols; col++) {
+          const dice = getRandomDiceFace();
+          gridRow.push(dice);
+
+          // Create and append dice cell to the grid
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          const img = document.createElement('img');
+          img.src = dice.face;
+          img.style.transform = `rotate(${dice.rotation}deg)`;
+          cell.appendChild(img);
+          gridElement.appendChild(cell);
+        }
+        grid.push(gridRow);
+      }
+      return grid;
+    }
+
+    // Generate the 6x6 dice grid
+    const grid = createDiceGrid(6, 6);
+    console.log(grid); // Logs the grid to the console
+  </script>
+</body>
+</html>
